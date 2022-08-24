@@ -1,35 +1,35 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>测试3 - 分类 - 老六杂谈</title>
-        <link>https://localhost:1313/categories/%E6%B5%8B%E8%AF%953/</link>
+        <link>https://conwy2021.github.io/categories/%E6%B5%8B%E8%AF%953/</link>
         <description>测试3 - 分类 - 老六杂谈</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</lastBuildDate><atom:link href="https://localhost:1313/categories/%E6%B5%8B%E8%AF%953/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</lastBuildDate><atom:link href="https://conwy2021.github.io/categories/%E6%B5%8B%E8%AF%953/" rel="self" type="application/rss+xml" /><item>
     <title>First_post</title>
-    <link>https://localhost:1313/about/about1/</link>
+    <link>https://conwy2021.github.io/about/about1/</link>
     <pubDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://localhost:1313/about/about1/</guid>
+    <guid>https://conwy2021.github.io/about/about1/</guid>
     <description><![CDATA[你好 post2]]></description>
 </item><item>
     <title>First_post</title>
-    <link>https://localhost:1313/categories/documentation/wendang/</link>
+    <link>https://conwy2021.github.io/categories/documentation/wendang/</link>
     <pubDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://localhost:1313/categories/documentation/wendang/</guid>
+    <guid>https://conwy2021.github.io/categories/documentation/wendang/</guid>
     <description><![CDATA[你好 post3]]></description>
 </item><item>
     <title>First_post</title>
-    <link>https://localhost:1313/first_post2/</link>
+    <link>https://conwy2021.github.io/first_post2/</link>
     <pubDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://localhost:1313/first_post2/</guid>
+    <guid>https://conwy2021.github.io/first_post2/</guid>
     <description><![CDATA[你好 post2]]></description>
 </item><item>
     <title>First_post</title>
-    <link>https://localhost:1313/first_post3/</link>
+    <link>https://conwy2021.github.io/first_post3/</link>
     <pubDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://localhost:1313/first_post3/</guid>
+    <guid>https://conwy2021.github.io/first_post3/</guid>
     <description><![CDATA[你好 post3]]></description>
 </item></channel>
 </rss>
