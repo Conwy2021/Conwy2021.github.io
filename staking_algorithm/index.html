@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title> uniswap v2 抵押挖矿 算法分析 - 老六杂谈</title><meta name="Description" content="begin 2022"><meta property="og:title" content=" uniswap v2 抵押挖矿 算法分析" />
+<meta property="og:description" content="初学uniswap v2 抵押挖矿 不明白其中算法 1 2 3 rewardPerTokenStored.add( lastTimeRewardApplicable().sub(lastUpdateTime).mul(rewardRate).mul(1e18).div(_totalSupply) ); 是如何来的。 网上的资料也比较少。所以自己把学习过程记录下（我会尽量让自己的分析正确无误" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://conwy2021.github.io/staking_algorithm/" />
+<meta property="og:image" content="https://conwy2021.github.io/logo.png"/>
+<meta property="article:published_time" content="2022-08-24T15:59:43+08:00" />
+<meta property="article:modified_time" content="2022-08-24T15:59:43+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://conwy2021.github.io/logo.png"/>
+
+<meta name="twitter:title" content=" uniswap v2 抵押挖矿 算法分析"/>
+<meta name="twitter:description" content="初学uniswap v2 抵押挖矿 不明白其中算法 1 2 3 rewardPerTokenStored.add( lastTimeRewardApplicable().sub(lastUpdateTime).mul(rewardRate).mul(1e18).div(_totalSupply) ); 是如何来的。 网上的资料也比较少。所以自己把学习过程记录下（我会尽量让自己的分析正确无误"/>
+<meta name="application-name" content="老六杂谈">
+<meta name="apple-mobile-web-app-title" content="老六杂谈"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://conwy2021.github.io/staking_algorithm/" /><link rel="prev" href="https://conwy2021.github.io/first_post2/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": " uniswap v2 抵押挖矿 算法分析",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/conwy2021.github.io\/staking_algorithm\/"
+        },"image": ["https:\/\/conwy2021.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "算法篇","wordcount":  1126 ,
+        "url": "https:\/\/conwy2021.github.io\/staking_algorithm\/","datePublished": "2022-08-24T15:59:43+08:00","dateModified": "2022-08-24T15:59:43+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": "https:\/\/conwy2021.github.io\/images\/avatar.png"},"author": {
+                "@type": "Person",
+                "name": "oldsix"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="老六杂谈">老六杂谈</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="老六杂谈">老六杂谈</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX"> uniswap v2 抵押挖矿 算法分析</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>oldsix</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/"><i class="far fa-folder fa-fw"></i>区块链</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-08-24">2022-08-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1126 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;<span id="/staking_algorithm/" class="leancloud_visitors" data-flag-title=" uniswap v2 抵押挖矿 算法分析">
+                        <i class="far fa-eye fa-fw"></i>&nbsp;<span class=leancloud-visitors-count></span>&nbsp;次阅读
+                    </span>&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
+            </div><div class="content" id="content"><p>初学uniswap v2 抵押挖矿 不明白其中算法</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"> rewardPerTokenStored.add<span class="o">(</span>
+                lastTimeRewardApplicable<span class="o">()</span>.sub<span class="o">(</span>lastUpdateTime<span class="o">)</span>.mul<span class="o">(</span>rewardRate<span class="o">)</span>.mul<span class="o">(</span>1e18<span class="o">)</span>.div<span class="o">(</span>_totalSupply<span class="o">)</span>
+            <span class="o">)</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>是如何来的。
+网上的资料也比较少。所以自己把学习过程记录下（我会尽量让自己的分析正确无误，不误导大家）。
+首先我还是找到了些资料的。感谢这些优秀的博主分析。
+视频分析
+Synthetix Staking Rewards Contract Explained:</p>
+<p>Part 0 - <a href="https://www.youtube.com/watch?v=6ZO5aYg1GI8" target="_blank" rel="noopener noreffer">https://youtu.be/6ZO5aYg1GI8</a></p>
+<p>Part 1 -  <a href="https://www.youtube.com/watch?v=LWWsjw3cgDk" target="_blank" rel="noopener noreffer">https://youtu.be/LWWsjw3cgDk</a></p>
+<p>Part 2 - <a href="https://www.youtube.com/watch?v=YqpRwJDz3xg" target="_blank" rel="noopener noreffer">https://youtu.be/YqpRwJDz3xg</a></p>
+<p>Part 3 - <a href="https://www.youtube.com/watch?v=pFX1-kNrJFU" target="_blank" rel="noopener noreffer">https://youtu.be/pFX1-kNrJFU</a><br>
+大致说下 视频从数学公式上  现从传统思路上分析
+r(u,a,b) 意思是 代币u 在时间a 到b的 收益
+l(u,t)  意思是 用户在t时间点时 代币的数量</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824202418199.png"
+        data-srcset="/image1/image-20220824202418199.png, /image1/image-20220824202418199.png 1.5x, /image1/image-20220824202418199.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824202418199.png"
+        title="/image1/image-20220824202418199.png" /></p>
+<p>对应的代码表示</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824202509957.png"
+        data-srcset="/image1/image-20220824202509957.png, /image1/image-20220824202509957.png 1.5x, /image1/image-20220824202509957.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824202509957.png"
+        title="/image1/image-20220824202509957.png" /></p>
+<p>白话分析：
+保存好每个时间点应的自己代币的数量(balanceAt(t))，和这个时间点对应当代币总量（totalSupplyAt(t)）,然后计算每个阶段自己的收益（reward）累加进行计算。
+举例分析：（视频里的图，图示化的讲解真的太好了）</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824202849620.png"
+        data-srcset="/image1/image-20220824202849620.png, /image1/image-20220824202849620.png 1.5x, /image1/image-20220824202849620.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824202849620.png"
+        title="/image1/image-20220824202849620.png" /></p>
+<p>先明确下已知信息<br>
+大黄的抵押代币是100 小熊的抵押代币是100<br>
+按图这个逻辑，<br>
+大黄在7秒时进行抵押，14秒时取出。<br>
+小熊在9秒时进行抵押，18秒时取出。<br>
+我们来计算下<strong>大黄</strong>的收益 按上面的代码计算（它按1秒 1秒 计算收益） <br>
+第1到7秒都是没有收益的 reward=0<br>
+第8秒  REWARD_RATE*100/100 = 1R  reward=1R<br>
+第9秒  REWARD_RATE*100/100 = 1R  reward=1R+1R<br>
+第10秒  REWARD_RATE*100/200 = 0.5R reward=1R+1R+0.5R<br>
+第11秒  REWARD_RATE*100/200 = 0.5R reward=1R+1R+0.5R+0.5R<br>
+第12秒  REWARD_RATE*100/200 = 0.5R reward=1R+1R+0.5R+0.5R+0.5R<br>
+第13秒  REWARD_RATE*100/200 = 0.5R reward=1R+1R+0.5R+0.5R+0.5R+0.5R<br>
+第14秒  REWARD_RATE*100/200 = 0.5R reward=1R+1R+0.5R+0.5R+0.5R+0.5R+0.5R<br>
+最后的reward=4.5R<br>
+我们可以分析出按这算法来搞 执行是要消耗gas的 是不行的<br>
+那么有人会提出 按每一秒算 不行 咱们按时间差算行不行 7到9秒 产出为1R 9到14秒产出为0.5R reward=1R<em>2+0.5R</em>5=4.5<br>
+这种情景下 我们需要保存每次变化的totalSupply 并且记录变化时的时间戳 按timetamps[]=[0,7,9,14,18]<br>
+伪代码为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="k">for</span><span class="o">(</span>uint <span class="nv">i</span><span class="o">=</span>0<span class="p">;</span>i&lt;timestamps.length<span class="p">;</span>i++<span class="o">){</span>
+	uint <span class="nv">t</span><span class="o">=</span>timestamps<span class="o">[</span>i<span class="o">]</span><span class="p">;</span>
+	uint <span class="nv">t1</span><span class="o">=</span>timestamps<span class="o">[</span>i+1<span class="o">]</span><span class="p">;</span>
+	<span class="nv">reward</span><span class="o">+=</span>R*<span class="o">(</span>t1-t<span class="o">)</span>*balanceAt<span class="o">(</span>t<span class="o">)[</span>msg.sender<span class="o">]</span>/totalSupplyAt<span class="o">(</span>t<span class="o">)</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>验证下这种算法：
+t=0 t1=7  reward=0
+t=7 t1=9 reward=R<em>2</em>100/100=2R
+t=9 t1=14 reward=2R+R<em>5</em>100/200=4.5R
+t=14 t1=18 reward=4.5R+R<em>4</em>0/100=4.5R</p>
+<p>很显然 虽然步骤少了 但是这只是4个时间点的变化 实际时间变化点是很多的 所以这个方案 是不行的
+继续视频中的推导</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824203017999.png"
+        data-srcset="/image1/image-20220824203017999.png, /image1/image-20220824203017999.png 1.5x, /image1/image-20220824203017999.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824203017999.png"
+        title="/image1/image-20220824203017999.png" /></p>
+<p>r(u,a,b) 意思是 代币u 在时间a 到b的 收益
+l(u,t)  意思是 用户在t时间点时 代币的数量
+首先k 是 8到14秒时 <strong>小黄</strong>的代币数量 是个常数 我们给提取出来
+为什么a=8 开始呢 以为第8秒时才有收益
+公式现在推到为这个样子</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824203055607.png"
+        data-srcset="/image1/image-20220824203055607.png, /image1/image-20220824203055607.png 1.5x, /image1/image-20220824203055607.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824203055607.png"
+        title="/image1/image-20220824203055607.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824203213865.png"
+        data-srcset="/image1/image-20220824203213865.png, /image1/image-20220824203213865.png 1.5x, /image1/image-20220824203213865.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824203213865.png"
+        title="/image1/image-20220824203213865.png" /></p>
+<p>这一步 补充下说明 我们要记住 这个是按每秒进行计算的 每秒表示变化
+其中 1/L(0)+1/L(1)+&hellip;+1/L(b)  多写几项方便理解  1/L(0)+1/L(1)+..+1/L(a-1)+1/L(a)+1/L(a+1)+&hellip;&hellip;.+1/L(b)</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824203236135.png"
+        data-srcset="/image1/image-20220824203236135.png, /image1/image-20220824203236135.png 1.5x, /image1/image-20220824203236135.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824203236135.png"
+        title="/image1/image-20220824203236135.png" /></p>
+<p>最后公式为</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824210156872.png"
+        data-srcset="/image1/image-20220824210156872.png, /image1/image-20220824210156872.png 1.5x, /image1/image-20220824210156872.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824210156872.png"
+        title="image-20220824210156872" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824210305585.png"
+        data-srcset="/image1/image-20220824210305585.png, /image1/image-20220824210305585.png 1.5x, /image1/image-20220824210305585.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824210305585.png"
+        title="image-20220824210305585" /></p>
+<p>根据这个公式推演
+<strong>大黄</strong>的收益</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824203328916.png"
+        data-srcset="/image1/image-20220824203328916.png, /image1/image-20220824203328916.png 1.5x, /image1/image-20220824203328916.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824203328916.png"
+        title="/image1/image-20220824203328916.png" /></p>
+<p><strong>小熊</strong>的收益</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824203348136.png"
+        data-srcset="/image1/image-20220824203348136.png, /image1/image-20220824203348136.png 1.5x, /image1/image-20220824203348136.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824203348136.png"
+        title="/image1/image-20220824203348136.png" /></p>
+<p>总结下：
+当前时刻的s的累加 - 前一个时刻s的累加[account] = account增加的s
+rewardPerTokenStored 其实是个公共的数据 所有人共享的 它的含义 应该是不定长时间段的每个代币可以提供多少个奖励代币的累加集合 每当代币的数量有变化时 或者时间存在增量（可以理解成代币的数量变化为0）时 就会进行累加计算 。
+当前时刻的s的累加 每次计算完reward后 会更新userRewardPerTokenPaid[account]
+就会变成未来一个时刻的减号后面的数字</p>
+<p>最后演算下 这个场景</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824203433388.png"
+        data-srcset="/image1/image-20220824203433388.png, /image1/image-20220824203433388.png 1.5x, /image1/image-20220824203433388.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824203433388.png"
+        title="/image1/image-20220824203433388.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/image1/image-20220824203446447.png"
+        data-srcset="/image1/image-20220824203446447.png, /image1/image-20220824203446447.png 1.5x, /image1/image-20220824203446447.png 2x"
+        data-sizes="auto"
+        alt="/image1/image-20220824203446447.png"
+        title="/image1/image-20220824203446447.png" /></p>
+<p>其实想把这个问题 以比较通俗易懂方式 分享出来 后来发现有点难。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-08-24</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/staking_algorithm/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://conwy2021.github.io/staking_algorithm/" data-title=" uniswap v2 抵押挖矿 算法分析" data-hashtags="算法篇"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://conwy2021.github.io/staking_algorithm/" data-hashtag="算法篇"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Hacker News" data-sharer="hackernews" data-url="https://conwy2021.github.io/staking_algorithm/" data-title=" uniswap v2 抵押挖矿 算法分析"><i class="fab fa-hacker-news fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://conwy2021.github.io/staking_algorithm/" data-title=" uniswap v2 抵押挖矿 算法分析"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@2.14.0/icons/line.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://conwy2021.github.io/staking_algorithm/" data-title=" uniswap v2 抵押挖矿 算法分析" data-ralateuid="xxxx"><i class="fab fa-weibo fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E7%AE%97%E6%B3%95%E7%AF%87/">算法篇</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/first_post2/" class="prev" rel="prev" title="First_post"><i class="fas fa-angle-left fa-fw"></i>First_post</a></div>
+</div>
+<div id="comments"><div id="valine" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://valine.js.org/">Valine</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.74.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2022</span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/valine/valine.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{"valine":{"appId":"QGzwQXOqs5JOhN4RGPOkR2mR-MdYXbMMI","appKey":"WBmoGyJtbqUswvfLh6L8iEBr","avatar":"mp","el":"#valine","emojiCDN":"https://cdn.jsdelivr.net/npm/emoji-datasource-google@5.0.1/img/google/64/","emojiMaps":{"100":"1f4af.png","alien":"1f47d.png","anger":"1f4a2.png","angry":"1f620.png","anguished":"1f627.png","astonished":"1f632.png","black_heart":"1f5a4.png","blue_heart":"1f499.png","blush":"1f60a.png","bomb":"1f4a3.png","boom":"1f4a5.png","broken_heart":"1f494.png","brown_heart":"1f90e.png","clown_face":"1f921.png","cold_face":"1f976.png","cold_sweat":"1f630.png","confounded":"1f616.png","confused":"1f615.png","cry":"1f622.png","crying_cat_face":"1f63f.png","cupid":"1f498.png","dash":"1f4a8.png","disappointed":"1f61e.png","disappointed_relieved":"1f625.png","dizzy":"1f4ab.png","dizzy_face":"1f635.png","drooling_face":"1f924.png","exploding_head":"1f92f.png","expressionless":"1f611.png","face_vomiting":"1f92e.png","face_with_cowboy_hat":"1f920.png","face_with_hand_over_mouth":"1f92d.png","face_with_head_bandage":"1f915.png","face_with_monocle":"1f9d0.png","face_with_raised_eyebrow":"1f928.png","face_with_rolling_eyes":"1f644.png","face_with_symbols_on_mouth":"1f92c.png","face_with_thermometer":"1f912.png","fearful":"1f628.png","flushed":"1f633.png","frowning":"1f626.png","ghost":"1f47b.png","gift_heart":"1f49d.png","green_heart":"1f49a.png","grimacing":"1f62c.png","grin":"1f601.png","grinning":"1f600.png","hankey":"1f4a9.png","hear_no_evil":"1f649.png","heart":"2764-fe0f.png","heart_decoration":"1f49f.png","heart_eyes":"1f60d.png","heart_eyes_cat":"1f63b.png","heartbeat":"1f493.png","heartpulse":"1f497.png","heavy_heart_exclamation_mark_ornament":"2763-fe0f.png","hole":"1f573-fe0f.png","hot_face":"1f975.png","hugging_face":"1f917.png","hushed":"1f62f.png","imp":"1f47f.png","innocent":"1f607.png","japanese_goblin":"1f47a.png","japanese_ogre":"1f479.png","joy":"1f602.png","joy_cat":"1f639.png","kiss":"1f48b.png","kissing":"1f617.png","kissing_cat":"1f63d.png","kissing_closed_eyes":"1f61a.png","kissing_heart":"1f618.png","kissing_smiling_eyes":"1f619.png","laughing":"1f606.png","left_speech_bubble":"1f5e8-fe0f.png","love_letter":"1f48c.png","lying_face":"1f925.png","mask":"1f637.png","money_mouth_face":"1f911.png","nauseated_face":"1f922.png","nerd_face":"1f913.png","neutral_face":"1f610.png","no_mouth":"1f636.png","open_mouth":"1f62e.png","orange_heart":"1f9e1.png","partying_face":"1f973.png","pensive":"1f614.png","persevere":"1f623.png","pleading_face":"1f97a.png","pouting_cat":"1f63e.png","purple_heart":"1f49c.png","rage":"1f621.png","relaxed":"263a-fe0f.png","relieved":"1f60c.png","revolving_hearts":"1f49e.png","right_anger_bubble":"1f5ef-fe0f.png","robot_face":"1f916.png","rolling_on_the_floor_laughing":"1f923.png","scream":"1f631.png","scream_cat":"1f640.png","see_no_evil":"1f648.png","shushing_face":"1f92b.png","skull":"1f480.png","skull_and_crossbones":"2620-fe0f.png","sleeping":"1f634.png","sleepy":"1f62a.png","slightly_frowning_face":"1f641.png","slightly_smiling_face":"1f642.png","smile":"1f604.png","smile_cat":"1f638.png","smiley":"1f603.png","smiley_cat":"1f63a.png","smiling_face_with_3_hearts":"1f970.png","smiling_imp":"1f608.png","smirk":"1f60f.png","smirk_cat":"1f63c.png","sneezing_face":"1f927.png","sob":"1f62d.png","space_invader":"1f47e.png","sparkling_heart":"1f496.png","speak_no_evil":"1f64a.png","speech_balloon":"1f4ac.png","star-struck":"1f929.png","stuck_out_tongue":"1f61b.png","stuck_out_tongue_closed_eyes":"1f61d.png","stuck_out_tongue_winking_eye":"1f61c.png","sunglasses":"1f60e.png","sweat":"1f613.png","sweat_drops":"1f4a6.png","sweat_smile":"1f605.png","thinking_face":"1f914.png","thought_balloon":"1f4ad.png","tired_face":"1f62b.png","triumph":"1f624.png","two_hearts":"1f495.png","unamused":"1f612.png","upside_down_face":"1f643.png","weary":"1f629.png","white_frowning_face":"2639-fe0f.png","white_heart":"1f90d.png","wink":"1f609.png","woozy_face":"1f974.png","worried":"1f61f.png","yawning_face":"1f971.png","yellow_heart":"1f49b.png","yum":"1f60b.png","zany_face":"1f92a.png","zipper_mouth_face":"1f910.png","zzz":"1f4a4.png"},"enableQQ":false,"highlight":true,"lang":"zh-cn","pageSize":10,"placeholder":"你的评论 ...","recordIP":true,"serverURLs":"https://leancloud.hugoloveit.com","visitor":true}}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
