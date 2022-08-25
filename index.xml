@@ -11,20 +11,20 @@
     <pubDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</pubDate>
     <author>作者</author>
     <guid>https://conwy2021.github.io/staking_algorithm/</guid>
-    <description><![CDATA[初学uniswap v2 抵押挖矿 不明白其中算法 1 2 3 rewardPerTokenStored.add( lastTimeRewardApplicable().sub(lastUpdateTime).mul(rewardRate).mul(1e18).div(_totalSupply) ); 是如何来的。 网上的资料也比较少。所以自己把学习过程记录下（我会尽量让自己的分析正确无误]]></description>
+    <description><![CDATA[初学uniswap v2 抵押挖矿 不明白其中算法 1 2 3 rewardPerTokenStored.add( lastTimeRewardApplicable().sub(lastUpdateTime).mul(rewardRate).mul(1e18).div(_totalSupply) ); 是如何来的。核心实现函数为modifier updateReward()。 网上的资料也比]]></description>
 </item><item>
-    <title>First_post</title>
+    <title>图片测试</title>
     <link>https://conwy2021.github.io/first_post2/</link>
     <pubDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</pubDate>
     <author>作者</author>
     <guid>https://conwy2021.github.io/first_post2/</guid>
-    <description><![CDATA[你好 post2]]></description>
+    <description><![CDATA[你好 post2 nihao nihao]]></description>
 </item><item>
-    <title>First_post</title>
+    <title>语法练习</title>
     <link>https://conwy2021.github.io/first_post3/</link>
     <pubDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</pubDate>
     <author>作者</author>
     <guid>https://conwy2021.github.io/first_post3/</guid>
-    <description><![CDATA[你好 post3]]></description>
+    <description><![CDATA[你好1 https://docs.github.com/cn/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax post3 hugo 编译 hugo serve -D 启动服务 开发者模式启动 你好2 这是下标文本1111这是上标文本 aaaaaa*aa a*bbbb ccc aaaaa 你好3 你好4 你好5 你好6 你好7 11111111 顶顶顶 11111111 11111111111111 1111 1111 11111 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111]]></description>
 </item></channel>
 </rss>

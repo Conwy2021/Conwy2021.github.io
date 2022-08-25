@@ -6,7 +6,7 @@
         <meta name="robots" content="noodp" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
         <title> uniswap v2 抵押挖矿 算法分析 - 老六杂谈</title><meta name="Description" content="begin 2022"><meta property="og:title" content=" uniswap v2 抵押挖矿 算法分析" />
-<meta property="og:description" content="初学uniswap v2 抵押挖矿 不明白其中算法 1 2 3 rewardPerTokenStored.add( lastTimeRewardApplicable().sub(lastUpdateTime).mul(rewardRate).mul(1e18).div(_totalSupply) ); 是如何来的。 网上的资料也比较少。所以自己把学习过程记录下（我会尽量让自己的分析正确无误" />
+<meta property="og:description" content="初学uniswap v2 抵押挖矿 不明白其中算法 1 2 3 rewardPerTokenStored.add( lastTimeRewardApplicable().sub(lastUpdateTime).mul(rewardRate).mul(1e18).div(_totalSupply) ); 是如何来的。核心实现函数为modifier updateReward()。 网上的资料也比" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://conwy2021.github.io/staking_algorithm/" />
 <meta property="og:image" content="https://conwy2021.github.io/logo.png"/>
@@ -16,7 +16,7 @@
 <meta name="twitter:image" content="https://conwy2021.github.io/logo.png"/>
 
 <meta name="twitter:title" content=" uniswap v2 抵押挖矿 算法分析"/>
-<meta name="twitter:description" content="初学uniswap v2 抵押挖矿 不明白其中算法 1 2 3 rewardPerTokenStored.add( lastTimeRewardApplicable().sub(lastUpdateTime).mul(rewardRate).mul(1e18).div(_totalSupply) ); 是如何来的。 网上的资料也比较少。所以自己把学习过程记录下（我会尽量让自己的分析正确无误"/>
+<meta name="twitter:description" content="初学uniswap v2 抵押挖矿 不明白其中算法 1 2 3 rewardPerTokenStored.add( lastTimeRewardApplicable().sub(lastUpdateTime).mul(rewardRate).mul(1e18).div(_totalSupply) ); 是如何来的。核心实现函数为modifier updateReward()。 网上的资料也比"/>
 <meta name="application-name" content="老六杂谈">
 <meta name="apple-mobile-web-app-title" content="老六杂谈"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -29,7 +29,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/conwy2021.github.io\/staking_algorithm\/"
-        },"image": ["https:\/\/conwy2021.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "算法篇","wordcount":  1126 ,
+        },"image": ["https:\/\/conwy2021.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "算法篇","wordcount":  1761 ,
         "url": "https:\/\/conwy2021.github.io\/staking_algorithm\/","datePublished": "2022-08-24T15:59:43+08:00","dateModified": "2022-08-24T15:59:43+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
             "@type": "Organization",
             "name": "xxxx","logo": "https:\/\/conwy2021.github.io\/images\/avatar.png"},"author": {
@@ -79,8 +79,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX"> uniswap v2 抵押挖矿 算法分析</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>oldsix</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/"><i class="far fa-folder fa-fw"></i>区块链</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-08-24">2022-08-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1126 字&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-08-24">2022-08-24</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1761 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>目录</span>
@@ -96,21 +96,21 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-bash" data-lang="bash"> rewardPerTokenStored.add<span class="o">(</span>
-                lastTimeRewardApplicable<span class="o">()</span>.sub<span class="o">(</span>lastUpdateTime<span class="o">)</span>.mul<span class="o">(</span>rewardRate<span class="o">)</span>.mul<span class="o">(</span>1e18<span class="o">)</span>.div<span class="o">(</span>_totalSupply<span class="o">)</span>
+               lastTimeRewardApplicable<span class="o">()</span>.sub<span class="o">(</span>lastUpdateTime<span class="o">)</span>.mul<span class="o">(</span>rewardRate<span class="o">)</span>.mul<span class="o">(</span>1e18<span class="o">)</span>.div<span class="o">(</span>_totalSupply<span class="o">)</span>
             <span class="o">)</span><span class="p">;</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>是如何来的。
-网上的资料也比较少。所以自己把学习过程记录下（我会尽量让自己的分析正确无误，不误导大家）。
-首先我还是找到了些资料的。感谢这些优秀的博主分析。
+</div><p>是如何来的。核心实现函数为modifier updateReward()。<br>
+网上的资料也比较少。所以自己把学习过程记录下（我会尽量让自己的分析正确无误，不误导大家）。<br>
+首先我还是找到了些资料的。感谢这些优秀的博主分析。<br>
 视频分析
 Synthetix Staking Rewards Contract Explained:</p>
 <p>Part 0 - <a href="https://www.youtube.com/watch?v=6ZO5aYg1GI8" target="_blank" rel="noopener noreffer">https://youtu.be/6ZO5aYg1GI8</a></p>
 <p>Part 1 -  <a href="https://www.youtube.com/watch?v=LWWsjw3cgDk" target="_blank" rel="noopener noreffer">https://youtu.be/LWWsjw3cgDk</a></p>
 <p>Part 2 - <a href="https://www.youtube.com/watch?v=YqpRwJDz3xg" target="_blank" rel="noopener noreffer">https://youtu.be/YqpRwJDz3xg</a></p>
 <p>Part 3 - <a href="https://www.youtube.com/watch?v=pFX1-kNrJFU" target="_blank" rel="noopener noreffer">https://youtu.be/pFX1-kNrJFU</a><br>
-大致说下 视频从数学公式上  现从传统思路上分析
-r(u,a,b) 意思是 代币u 在时间a 到b的 收益
+大致说下 视频从数学公式上  现从传统思路上分析<br>
+r(u,a,b) 意思是 代币u 在时间a 到b的 收益<br>
 l(u,t)  意思是 用户在t时间点时 代币的数量</p>
 <p><img
         class="lazyload"
@@ -129,7 +129,7 @@ l(u,t)  意思是 用户在t时间点时 代币的数量</p>
         data-sizes="auto"
         alt="/image1/image-20220824202509957.png"
         title="/image1/image-20220824202509957.png" /></p>
-<p>白话分析：
+<p>白话分析：<br>
 保存好每个时间点应的自己代币的数量(balanceAt(t))，和这个时间点对应当代币总量（totalSupplyAt(t)）,然后计算每个阶段自己的收益（reward）累加进行计算。<br>
 举例分析：（视频里的图，图示化的讲解真的太好了）</p>
 <p><img
@@ -190,10 +190,10 @@ t=14 t1=18 reward=4.5R+R*4*100/100=8.5R</p>
         data-sizes="auto"
         alt="/image1/image-20220824203017999.png"
         title="/image1/image-20220824203017999.png" /></p>
-<p>r(u,a,b) 意思是 代币u 在时间a 到b的 收益
-l(u,t)  意思是 用户在t时间点时 代币的数量
-首先k 是 8到14秒时 <strong>小黄</strong>的代币数量 是个常数 我们给提取出来
-为什么a=8 开始呢 以为第8秒时才有收益
+<p>r(u,a,b) 意思是 代币u 在时间a 到b的 收益<br>
+l(u,t)  意思是 用户在t时间点时 代币的数量<br>
+首先k 是 8到14秒时 <strong>小黄</strong>的代币数量 是个常数 我们给提取出来<br>
+为什么a=8 开始呢 以为第8秒时才有收益<br>
 公式现在推到为这个样子</p>
 <p><img
         class="lazyload"
@@ -211,7 +211,7 @@ l(u,t)  意思是 用户在t时间点时 代币的数量
         data-sizes="auto"
         alt="/image1/image-20220824203213865.png"
         title="/image1/image-20220824203213865.png" /></p>
-<p>这一步 补充下说明 我们要记住 这个是按每秒进行计算的 每秒表示变化
+<p>这一步 补充下说明 我们要记住 这个是按每秒进行计算的 每秒表示变化<br>
 其中 1/L(0)+1/L(1)+&hellip;+1/L(b)  多写几项方便理解  1/L(0)+1/L(1)+..+1/L(a-1)+1/L(a)+1/L(a+1)+&hellip;&hellip;.+1/L(b)</p>
 <p><img
         class="lazyload"
@@ -258,9 +258,11 @@ l(u,t)  意思是 用户在t时间点时 代币的数量
         alt="/image1/image-20220824203348136.png"
         title="/image1/image-20220824203348136.png" /></p>
 <p>总结下：
-当前时刻的s的累加 - 前一个时刻s的累加[account] = account增加的s
-rewardPerTokenStored 其实是个公共的数据 所有人共享的 它的含义 应该是不定长时间段的每个代币可以提供多少个奖励代币的累加集合 每当代币的数量有变化时 或者时间存在增量（可以理解成代币的数量变化为0）时 就会进行累加计算 。
-当前时刻的s的累加 每次计算完reward后 会更新userRewardPerTokenPaid[account]
+当前时刻的s的累加 - 前一个时刻s的累加[account] = account增加的s<br>
+rewardPerTokenStored 其实是个公共的数据 所有人共享的<br>
+它的含义 应该是一定时间段<sub>这个时间段代币总量不变</sub>的每个代币可以提供多少个奖励代币的累加集合<br>
+每当代币的数量有变化时 或者时间存在增量（可以理解成代币的数量变化为0）时 就会进行累加计算 。<br>
+当前时刻的s的累加 每次计算完reward后 会更新userRewardPerTokenPaid[account]<br>
 就会变成未来一个时刻的减号后面的数字</p>
 <p>最后演算下 这个场景</p>
 <p><img
@@ -279,7 +281,21 @@ rewardPerTokenStored 其实是个公共的数据 所有人共享的 它的含义
         data-sizes="auto"
         alt="/image1/image-20220824203446447.png"
         title="/image1/image-20220824203446447.png" /></p>
-<p>其实想把这个问题 以比较通俗易懂方式 分享出来 后来发现有点难。</p>
+<p>我们根据上面那个有横轴纵轴的图，从图像上分析他的算法。</p>
+<p>假设用L(t) 是总收益，一定时间段<sub>这个时间段代币总量不变</sub>的每个代币可以兑换的奖励币为m<sub>n </sub> ,m<sub>n </sub>会根据代币总量的变化而变化</p>
+<p>我们每秒的计算 下 L(t)=m<sub>1 </sub>*2 + m<sub>2 </sub>*3 + m<sub>3 </sub>*2 + m<sub>4 </sub>*4</p>
+<p>计算下 <strong>大熊</strong>的收益   他抵押代币时的 L(t)为m<sub>1 </sub>*2  他提取代币时的L(t)为m<sub>1 </sub>*2 + m<sub>2 </sub>*3 + m<sub>3 </sub>*2 + m<sub>4 </sub>*4</p>
+<p>那么收益为  m<sub>1 </sub>*2 + m<sub>2 </sub>*3 + m<sub>3 </sub>*2 + m<sub>4 </sub>*4 - m<sub>1 </sub>*2 = m<sub>2 </sub>*3 + m<sub>3 </sub>*2 + m<sub>4 </sub>*4 再乘以他的代币数量100</p>
+<p>我们把100 放到里面去  m<sub>2 </sub>*3*100 + m<sub>3 </sub>*2*100 + m<sub>4 </sub>*4*100  可以看出 这个其实就时每个阶段的收益之和</p>
+<p>当<strong>大熊</strong>得到收益后 会把记录下自己领过奖励时的 L(t)=m<sub>1 </sub>*2 + m<sub>2 </sub>*3 + m<sub>3 </sub>*2 + m<sub>4 </sub>*4  下次再计算时 就用最新的L(t)减去之前的（这里假               设<strong>大熊</strong>还有代币在池子里）</p>
+<p>PS：这里<strong>大熊</strong>实际是把代币都领出去了。下次质押代币时，会先出发modifier updateReward()函数 记录抵押时的L(t)。就像他第一次抵  押一样。</p>
+<hr>
+<p>这边再大致说下MasterChef的计算思路</p>
+<p>代码 在https://etherscan.io/address/0xc2EdaD668740f1aA35E4D8f227fB8E17dcA888Cd#code 我在他git上没找到</p>
+<p>MasterChef是每个区块产生100个奖励代币 SushiToken （他设计在多少区块前奖励是10倍，我们先按没有这个设计理解）</p>
+<p>记录 一定区块段<sub>这个区块段代币总量不变</sub>的每个代币可以兑换的奖励币累加值m<sub>n </sub>  和自己抵押时对应的m<sub>n </sub></p>
+<p>然后就是累加m<sub>n </sub>-自己抵押时对应的m<sub>n </sub></p>
+<p>核心函数为updatePool()</p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
@@ -305,7 +321,7 @@ rewardPerTokenStored 其实是个公共的数据 所有人共享的 它的含义
         </section>
     </div>
 
-    <div class="post-nav"><a href="/first_post2/" class="prev" rel="prev" title="First_post"><i class="fas fa-angle-left fa-fw"></i>First_post</a></div>
+    <div class="post-nav"><a href="/first_post2/" class="prev" rel="prev" title="图片测试"><i class="fas fa-angle-left fa-fw"></i>图片测试</a></div>
 </div>
 </article></div>
             </main><footer class="footer">
