@@ -1,9 +1,16 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>所有文章 - 老六杂谈</title>
+        <title>所有文章 - Conwy随笔</title>
         <link>https://conwy2021.github.io/posts/</link>
-        <description>所有文章 | 老六杂谈</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</lastBuildDate><atom:link href="https://conwy2021.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+        <description>所有文章 | Conwy随笔</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Thu, 08 Sep 2022 15:59:43 &#43;0800</lastBuildDate><atom:link href="https://conwy2021.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>刑法学讲义笔记</title>
+    <link>https://conwy2021.github.io/xingfa_note/</link>
+    <pubDate>Thu, 08 Sep 2022 15:59:43 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://conwy2021.github.io/xingfa_note/</guid>
+    <description><![CDATA[第二章 犯罪 犯罪与责任 014 犯罪的概念和分类 归纳起来， 我们可以发现犯罪有三个特征。 1.犯罪的形式特征， 它在形式上违反了法律的规定， 一种行为构成犯罪]]></description>
+</item><item>
     <title> uniswap v2 抵押挖矿 算法分析</title>
     <link>https://conwy2021.github.io/staking_algorithm/</link>
     <pubDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</pubDate>
