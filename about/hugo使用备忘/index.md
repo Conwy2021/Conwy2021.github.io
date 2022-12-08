@@ -25,7 +25,7 @@
 
 如图
 
-![](hugo使用备忘.assets/image-20221208225938771.png)
+![](/hugo使用备忘.assets/image-20221208225938771.png)
 
 创建文章命令  hugo new post/第二篇测试博客.md （默认是草稿模式）
 
