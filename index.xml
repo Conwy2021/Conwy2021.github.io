@@ -3,35 +3,14 @@
         <title>Conwy随笔</title>
         <link>https://conwy2021.github.io/</link>
         <description>begin 2022</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Thu, 08 Sep 2022 15:59:43 &#43;0800</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</lastBuildDate>
             <atom:link href="https://conwy2021.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
-    <title>刑法学讲义笔记</title>
-    <link>https://conwy2021.github.io/xingfa_note/</link>
-    <pubDate>Thu, 08 Sep 2022 15:59:43 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://conwy2021.github.io/xingfa_note/</guid>
-    <description><![CDATA[第二章 犯罪 犯罪与责任 014 犯罪的概念和分类 归纳起来， 我们可以发现犯罪有三个特征。 1.犯罪的形式特征， 它在形式上违反了法律的规定， 一种行为构成犯罪]]></description>
-</item><item>
     <title> uniswap v2 抵押挖矿 算法分析</title>
     <link>https://conwy2021.github.io/staking_algorithm/</link>
     <pubDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</pubDate>
     <author>作者</author>
     <guid>https://conwy2021.github.io/staking_algorithm/</guid>
     <description><![CDATA[初学uniswap v2 抵押挖矿 不明白其中算法 1 2 3 rewardPerTokenStored.add( lastTimeRewardApplicable().sub(lastUpdateTime).mul(rewardRate).mul(1e18).div(_totalSupply) ); 是如何来的。核心实现函数为modifier updateReward()。 网上的资料也比]]></description>
-</item><item>
-    <title>图片测试</title>
-    <link>https://conwy2021.github.io/first_post2/</link>
-    <pubDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://conwy2021.github.io/first_post2/</guid>
-    <description><![CDATA[你好 post2 nihao nihao]]></description>
-</item><item>
-    <title>语法练习</title>
-    <link>https://conwy2021.github.io/first_post3/</link>
-    <pubDate>Wed, 24 Aug 2022 15:59:43 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://conwy2021.github.io/first_post3/</guid>
-    <description><![CDATA[你好1 https://docs.github.com/cn/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax post3 hugo 编译 hugo serve -D 启动服务 开发者模式启动 你好2 这是下标文本1111这是上标文本 aaaaaa*aa a*bbbb ccc aaaaa 你好3 你好4 你好5 你好6 你好7 11111111 顶顶顶 11111111 11111111111111 1111 1111 11111 111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111]]></description>
 </item></channel>
 </rss>
