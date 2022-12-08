@@ -13,12 +13,12 @@
     
     
     <item>
-      <title>First_post</title>
-      <link>https://conwy2021.github.io/about/about1/</link>
+      <title>hugo写作备忘</title>
+      <link>https://conwy2021.github.io/about/hugo%E4%BD%BF%E7%94%A8%E5%A4%87%E5%BF%98/</link>
       <pubDate>Wed, 24 Aug 2022 15:59:43 +0800</pubDate>
       
-      <guid>https://conwy2021.github.io/about/about1/</guid>
-      <description>你好 post2</description>
+      <guid>https://conwy2021.github.io/about/hugo%E4%BD%BF%E7%94%A8%E5%A4%87%E5%BF%98/</guid>
+      <description>常用命令 在blog目录下启动cmd。 执行hugo命令 编译 。 使用hugo 后会自动将改动的文章或者配置，更新到public 目录下 ，实际上传的也是</description>
     </item>
     
   </channel>
