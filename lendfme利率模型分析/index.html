@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>lendfme利率存储分析 - Conwy随笔</title><meta name="Description" content="begin 2022"><meta property="og:title" content="lendfme利率存储分析" />
+<meta property="og:description" content="Lendfme 借贷合约存储利率分析 Lendfme是模仿compound的，所有很多资料 我这看的是compound的。 Compound 18年9月发布v1。Lendfme" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://conwy2021.github.io/lendfme%E5%88%A9%E7%8E%87%E6%A8%A1%E5%9E%8B%E5%88%86%E6%9E%90/" />
+<meta property="og:image" content="https://conwy2021.github.io/logo.png"/>
+<meta property="article:published_time" content="2022-12-18T15:59:43+08:00" />
+<meta property="article:modified_time" content="2022-12-18T15:59:43+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://conwy2021.github.io/logo.png"/>
+
+<meta name="twitter:title" content="lendfme利率存储分析"/>
+<meta name="twitter:description" content="Lendfme 借贷合约存储利率分析 Lendfme是模仿compound的，所有很多资料 我这看的是compound的。 Compound 18年9月发布v1。Lendfme"/>
+<meta name="application-name" content="Conwy随笔">
+<meta name="apple-mobile-web-app-title" content="Conwy随笔"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://conwy2021.github.io/lendfme%E5%88%A9%E7%8E%87%E6%A8%A1%E5%9E%8B%E5%88%86%E6%9E%90/" /><link rel="prev" href="https://conwy2021.github.io/staking_algorithm/" /><link rel="next" href="https://conwy2021.github.io/lendfme_shijianfenxi/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "lendfme利率存储分析",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/conwy2021.github.io\/lendfme%E5%88%A9%E7%8E%87%E6%A8%A1%E5%9E%8B%E5%88%86%E6%9E%90\/"
+        },"image": ["https:\/\/conwy2021.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "算法篇","wordcount":  2515 ,
+        "url": "https:\/\/conwy2021.github.io\/lendfme%E5%88%A9%E7%8E%87%E6%A8%A1%E5%9E%8B%E5%88%86%E6%9E%90\/","datePublished": "2022-12-18T15:59:43+08:00","dateModified": "2022-12-18T15:59:43+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": "https:\/\/conwy2021.github.io\/images\/avatar.png"},"author": {
+                "@type": "Person",
+                "name": "Conwy"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Conwy随笔">Conwy随笔</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Conwy随笔">Conwy随笔</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">lendfme利率存储分析</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Conwy</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E5%8C%BA%E5%9D%97%E9%93%BE/"><i class="far fa-folder fa-fw"></i>区块链</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-12-18">2022-12-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2515 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#lendfme-借贷合约存储利率分析">Lendfme 借贷合约存储利率分析</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="lendfme-借贷合约存储利率分析">Lendfme 借贷合约存储利率分析</h2>
+<p>Lendfme是模仿compound的，所有很多资料 我这看的是compound的。</p>
+<p>Compound 18年9月发布v1。Lendfme模仿的也是这个版本。</p>
+<p>首先我们确定下Lendfme的利率算法(<strong>核心问题</strong>)：根据白皮书（https://compound.finance/documents/Compound.Whitepaper.v04.pdf）和实际代码写法。Lendfme的利率计算方式和传统的存在不同。</p>
+<p>传统的利率算法：(1+10%)N N表示周期</p>
+<p>Lendfme利率算法：（1+10% *N）</p>
+<p>也就是说 在一段多周期的计算中，Lendfme是没有按每个周期的结果进行累加计算的。</p>
+<p>存款利率变化时</p>
+<p>传统的利率算法：(1+10%)<sup>N-1</sup>*(1+20%)  N表示周期</p>
+<p>Lendfme利率算法：（1+10% *(N-1))*(1+20%)</p>
+<p>举个例子：存款利率10%每天（每个周期），存5天（多周期）</p>
+<p>传统我们存款利息的算法:</p>
+<p>Lendfme存款利息的算法: 100 *(1+10% *5)</p>
+<p>存款利率变化时</p>
+<p>传统我们存款利息的算法: 100 *(1+10%)<sup>4</sup> *(1+20%)</p>
+<p>Lendfme存款利息的算法: 100 *(1+10%*4) *(1+20%)</p>
+<p>分析第一种场景：我们在区块1 小A 存 ，区块2 小B借，区块4 小B借， 区块5 小A提</p>
+<p>其中，第一次借款后，存款利率变为10% ，第二次借款后，存款利率变为20%。以区块为周期。</p>
+<p>当前场景下的数据为（借款后才会有存款利率，借1表示第一个借操作）</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232025449.png"
+        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232025449.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232025449.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232025449.png 2x"
+        data-sizes="auto"
+        alt="/lendfme利率模型分析.assets/image-20221228232025449.png"
+        title="/lendfme利率模型分析.assets/image-20221228232025449.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232043738.png"
+        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232043738.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232043738.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232043738.png 2x"
+        data-sizes="auto"
+        alt="/lendfme利率模型分析.assets/image-20221228232043738.png"
+        title="/lendfme利率模型分析.assets/image-20221228232043738.png" /></p>
+<p>补充说明下：存的是当动作发生时newSupplyIndex，也是动作发生后的SupplyIndex。因为newSupplyIndex会在函数最后更新supplyIndex。</p>
+<p>这边假设提款为0，让本金和利息都在用户账本中保存。方便我们理解，也就是说，当提款为0时，表示利息结算操作。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232103766.png"
+        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232103766.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232103766.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232103766.png 2x"
+        data-sizes="auto"
+        alt="/lendfme利率模型分析.assets/image-20221228232103766.png"
+        title="/lendfme利率模型分析.assets/image-20221228232103766.png" /></p>
+<p>说下这个市场账本（market）和用户账本(balance)。</p>
+<p>市场账本market是个全局变量， 在每次存，借，提 会更新整体的总存款，存款利率，存款利率系数，总借款，借款利率，借款系数，并且更新发生这些动作时的*区块号（区块号更新也是重点）*。这里我们只看存款相关的数据。</p>
+<p>用户账本balance 也是全局变量记录用户的本金和当时存款时或者提款时的存款利率系数SupplyIndex。</p>
+<p>其中 old 和new 表示 SupplyIndex变更标记。每次使用时用old SupplyIndex算出new SupplyIndex。</p>
+<p>这个SupplyIndex 会在每次存，借，提 都会更新的。（这个点也是重点）</p>
+<p>再加个说明：SupplyIndex 这个值会更新到市场账本market的supplyIndex和用户账本balance的 interestIndex的。以当前场景 ，在小A存在存和提操作时，会把new supplyIndex 更新到自己账本上。</p>
+<p>重点：市场账本的SupplyIndex和用户账本的interestIndex。</p>
+<p>以当前场景进行计算：</p>
+<p>用户提款的金额是多少</p>
+<p>100 *1.44/1=144 （这一步是calculateBalance里写的代码计算过程）</p>
+<p>等同于 100 *0.1+100*0.1 +120*0.2=144</p>
+<p>calculateInterestIndex函数</p>
+<p>oldSupplyIndex *(1+old利率*周期)=newSupplyIndex</p>
+<p>calculateBalance 函数可以理解为结算收益（本金+利息）</p>
+<p>本金 * newSupplyIndex/ oldSupplyIndex=新本金</p>
+<p>我们细分下每步操作：</p>
+<p>存</p>
+<p>newSupplyIndex= oldSupplyIndex *(1+old利率*周期)=1*(1+0)=1</p>
+<p>SupplyIndex初始默认值是10 ^18^ 这里简化为1，这里的1 其实和以前奥数中表示1份或者1个单位类似 因为这个值会做除数，最后都会被约分掉。</p>
+<p>新本金=本金* newSupplyIndex/ oldSupplyIndex=0*1/1=0</p>
+<p>后面有个add 操作会加上你传入的值 我们假设存100</p>
+<p>userSupplyUpdated=0+100=100 这个值会在后面更新到用户账本</p>
+<p>更新区块号为当前区块为 1</p>
+<p>更新newSupplyIndex至市场账本和用户账本</p>
+<p>借1（第一个借操作）</p>
+<p>借款时只更新SupplyIndex</p>
+<p>oldSupplyIndex*(1+old利率*周期)=newSupplyIndex（计算公式）</p>
+<p>1*（1+0*1）=1 注意此时的old利率是0</p>
+<p>更新至市场账本</p>
+<p>借2</p>
+<p>oldSupplyIndex*(1+old利率*周期)=newSupplyIndex（计算公式）</p>
+<p>1*(1+10%*2)=1.2 注意此时的old利率是10%,过了两个周期（以块为周期）</p>
+<p>更新至市场账本</p>
+<p>提</p>
+<p>oldSupplyIndex*(1+old利率*周期)=newSupplyIndex（计算公式）</p>
+<p>1.2*(1+20%*1)=1.44</p>
+<p>calculateBalance(balance.principal, balance.interestIndex, localResults.newSupplyIndex);</p>
+<p>计算用户的总金额</p>
+<p>注意这里的计算公式是 用户账本的本金*市场账本算出新的存款利率系数/<strong>用户账本存</strong>的存款利率系数</p>
+<p>calculateBalance 函数的计算公式 ： 本金* newSupplyIndex/ oldSupplyIndex=新本金</p>
+<p>所以当前用户余额 为 100*1.44/1 =144</p>
+<p>更新newSupplyIndex 1.44 至市场账本和用户账本。</p>
+<p>我们再进一步计算下 当第6块时用户的本金+利息是多少</p>
+<p>按之前的想法 提款0 在第6块 表示 计算第6块时的本金和利息。</p>
+<p>计算如下</p>
+<p>calculateInterestIndex函数 公式如下</p>
+<p>oldSupplyIndex*(1+old利率*周期)=newSupplyIndex</p>
+<p>1.44*（1+20% *1）=1.728</p>
+<p>calculateBalance函数 公式如下</p>
+<p>本金 * newSupplyIndex/ oldSupplyIndex=新本金</p>
+<p>144 *1.728/1.44 =144*1.2=1728</p>
+<p>更新 newSupplyIndex 1.728至市场账本和用户账本。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232133358.png"
+        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232133358.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232133358.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232133358.png 2x"
+        data-sizes="auto"
+        alt="/lendfme利率模型分析.assets/image-20221228232133358.png"
+        title="/lendfme利率模型分析.assets/image-20221228232133358.png" /></p>
+<p>我们再多算一步进行验证，第7块有人还钱了导致存款利率降低为10%，我们在第8块 计算下用户的总金额</p>
+<p>有人还钱存款利率降低至10%</p>
+<p>calculateInterestIndex函数 公式如下</p>
+<p>oldSupplyIndex*(1+old利率*周期)=newSupplyIndex</p>
+<p>1.728 *（1+20%*1）=2.0736</p>
+<p>更新newSupplyIndex至市场账本。注意这里是没有更新用户账本的</p>
+<p>第8区块 计算</p>
+<p>calculateInterestIndex函数 公式如下</p>
+<p>oldSupplyIndex*(1+old利率 *周期)=newSupplyIndex 这里周期为1的原因是之前区块7的时候我们更新了区块号。</p>
+<p>2.0736 *（1+10% *1）=2.28096 -&gt; 1.728*(1+20%)(1+10%)</p>
+<p>calculateBalance函数 公式如下</p>
+<p>本金 * newSupplyIndex/ oldSupplyIndex=新本金 （oldSupplyIndex是用户账本中的值）</p>
+<p>172.8 *2.28096/1.728 =228.096</p>
+<p>等同于：172.8 *(1+20%)*(1+10%)=228.096</p>
+<p>其中乘以1+20%是第7块的总金额</p>
+<p>乘以1+10%是第8块的总金额 同时我们也看出newSupplyIndex/ oldSupplyIndex 就是存款</p>
+<p>利率的累乘值。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232201245.png"
+        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232201245.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232201245.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232201245.png 2x"
+        data-sizes="auto"
+        alt="/lendfme利率模型分析.assets/image-20221228232201245.png"
+        title="/lendfme利率模型分析.assets/image-20221228232201245.png" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232213106.png"
+        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232213106.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232213106.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232213106.png 2x"
+        data-sizes="auto"
+        alt="/lendfme利率模型分析.assets/image-20221228232213106.png"
+        title="/lendfme利率模型分析.assets/image-20221228232213106.png" /></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-12-18</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/lendfme%E5%88%A9%E7%8E%87%E6%A8%A1%E5%9E%8B%E5%88%86%E6%9E%90/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E7%AE%97%E6%B3%95%E7%AF%87/">算法篇</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/staking_algorithm/" class="prev" rel="prev" title=" uniswap v2 抵押挖矿 算法分析"><i class="fas fa-angle-left fa-fw"></i> uniswap v2 抵押挖矿 算法分析</a>
+            <a href="/lendfme_shijianfenxi/" class="next" rel="next" title="Lendfme事件分析">Lendfme事件分析<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.74.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2022</span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Conwy随笔</title>
+    <link>https://conwy2021.github.io/post/</link>
+    <description>Recent content in Posts on Conwy随笔</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Wed, 28 Dec 2022 21:38:14 +0800</lastBuildDate>
+    
+	<atom:link href="https://conwy2021.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Lendfme事件分析</title>
+      <link>https://conwy2021.github.io/post/lendfme%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/</link>
+      <pubDate>Wed, 28 Dec 2022 21:38:14 +0800</pubDate>
+      
+      <guid>https://conwy2021.github.io/post/lendfme%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/</guid>
+      <description>事件相关信息 公链 以太坊链 黑客地址 0xa9bf70a420d364e923c74448d9d817d3f2a77822 攻击合约 0x538359785a8d5ab1a741a0ba94f26a800759d91d imBTC 地址 0x3212b29e33587a00fb1c83346f5dbfa69a458923 精度位 8 也就是为什么我们在交易记录中看到他的数字都是小数点后8位的原因 另外这个代币是ER</description>
+    </item>
+    
+  </channel>
+</rss>
