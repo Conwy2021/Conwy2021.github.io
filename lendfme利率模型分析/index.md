@@ -109,7 +109,7 @@ calculateBalance 函数可以理解为结算收益（本金+利息）
 
 newSupplyIndex= oldSupplyIndex \*(1+old利率\*周期)=1\*(1+0)=1
 
-SupplyIndex初始默认值是10 ^18^ 这里简化为1，这里的1 其实和以前奥数中表示1份或者1个单位类似 因为这个值会做除数，最后都会被约分掉。
+SupplyIndex初始默认值是10 <sup>18</sup> 这里简化为1，这里的1 其实和以前奥数中表示1份或者1个单位类似 因为这个值会做除数，最后都会被约分掉。
 
 新本金=本金\* newSupplyIndex/ oldSupplyIndex=0\*1/1=0 
 
