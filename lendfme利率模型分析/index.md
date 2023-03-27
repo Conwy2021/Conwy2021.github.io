@@ -3,8 +3,6 @@
 
 ## Lendfme 借贷合约存储利率分析
 
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-
 Lendfme是模仿compound的，所有很多资料 我这看的是compound的。
 
 Compound 18年9月发布v1。Lendfme模仿的也是这个版本。   
