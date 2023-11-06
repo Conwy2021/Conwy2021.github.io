@@ -43,7 +43,13 @@
         <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
     <div class="header-wrapper">
         <div class="header-title">
-            <a href="/" title="Conwy">Conwy</a>
+            <a href="/" title="Conwy">Conwy
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+            </a>
         </div>
         <div class="menu">
             <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
@@ -112,34 +118,31 @@ Synthetix Staking Rewards Contract Explained:</p>
 大致说下 视频从数学公式上  现从传统思路上分析<br>
 r(u,a,b) 意思是 代币u 在时间a 到b的 收益<br>
 l(u,t)  意思是 用户在t时间点时 代币的数量</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824202418199.png"
-        data-srcset="/image1/image-20220824202418199.png, /image1/image-20220824202418199.png 1.5x, /image1/image-20220824202418199.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824202418199.png"
-        title="/image1/image-20220824202418199.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824202418199.png">
+<img src="/image1/image-20220824202418199.png" alt=""  />
+</a>
+</div>
+</p>
 <p>对应的代码表示</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824202509957.png"
-        data-srcset="/image1/image-20220824202509957.png, /image1/image-20220824202509957.png 1.5x, /image1/image-20220824202509957.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824202509957.png"
-        title="/image1/image-20220824202509957.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824202509957.png">
+<img src="/image1/image-20220824202509957.png" alt=""  />
+</a>
+</div>
+</p>
 <p>白话分析：<br>
 保存好每个时间点应的自己代币的数量(balanceAt(t))，和这个时间点对应当代币总量（totalSupplyAt(t)）,然后计算每个阶段自己的收益（reward）累加进行计算。<br>
 举例分析：（视频里的图，图示化的讲解真的太好了）</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824202849620.png"
-        data-srcset="/image1/image-20220824202849620.png, /image1/image-20220824202849620.png 1.5x, /image1/image-20220824202849620.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824202849620.png"
-        title="/image1/image-20220824202849620.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824202849620.png">
+<img src="/image1/image-20220824202849620.png" alt=""  />
+</a>
+</div>
+</p>
 <p>先明确下已知信息<br>
 <strong>大黄</strong>的抵押代币是100 <strong>小熊</strong>的抵押代币是100<br>
 按图这个逻辑，<br>
@@ -182,81 +185,73 @@ t=9 t1=14 reward=2R+R*5*100/200=4.5R<br>
 t=14 t1=18 reward=4.5R+R*4*100/100=8.5R</p>
 <p>很显然 虽然步骤少了 但是这只是4个时间点的变化 实际时间变化点是很多的 所以这个方案 是不行的
 继续视频中的推导</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824203017999.png"
-        data-srcset="/image1/image-20220824203017999.png, /image1/image-20220824203017999.png 1.5x, /image1/image-20220824203017999.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824203017999.png"
-        title="/image1/image-20220824203017999.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824203017999.png">
+<img src="/image1/image-20220824203017999.png" alt=""  />
+</a>
+</div>
+</p>
 <p>r(u,a,b) 意思是 代币u 在时间a 到b的 收益<br>
 l(u,t)  意思是 用户在t时间点时 代币的数量<br>
 首先k 是 8到14秒时 <strong>小黄</strong>的代币数量 是个常数 我们给提取出来<br>
 为什么a=8 开始呢 以为第8秒时才有收益<br>
 公式现在推到为这个样子</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824203055607.png"
-        data-srcset="/image1/image-20220824203055607.png, /image1/image-20220824203055607.png 1.5x, /image1/image-20220824203055607.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824203055607.png"
-        title="/image1/image-20220824203055607.png" /></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824203213865.png"
-        data-srcset="/image1/image-20220824203213865.png, /image1/image-20220824203213865.png 1.5x, /image1/image-20220824203213865.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824203213865.png"
-        title="/image1/image-20220824203213865.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824203055607.png">
+<img src="/image1/image-20220824203055607.png" alt=""  />
+</a>
+</div>
+</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824203213865.png">
+<img src="/image1/image-20220824203213865.png" alt=""  />
+</a>
+</div>
+</p>
 <p>这一步 补充下说明 我们要记住 这个是按每秒进行计算的 每秒表示变化<br>
 其中 1/L(0)+1/L(1)+&hellip;+1/L(b)  多写几项方便理解  1/L(0)+1/L(1)+..+1/L(a-1)+1/L(a)+1/L(a+1)+&hellip;&hellip;.+1/L(b)</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824203236135.png"
-        data-srcset="/image1/image-20220824203236135.png, /image1/image-20220824203236135.png 1.5x, /image1/image-20220824203236135.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824203236135.png"
-        title="/image1/image-20220824203236135.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824203236135.png">
+<img src="/image1/image-20220824203236135.png" alt=""  />
+</a>
+</div>
+</p>
 <p>最后公式为</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824210156872.png"
-        data-srcset="/image1/image-20220824210156872.png, /image1/image-20220824210156872.png 1.5x, /image1/image-20220824210156872.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824210156872.png"
-        title="image-20220824210156872" /></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824210305585.png"
-        data-srcset="/image1/image-20220824210305585.png, /image1/image-20220824210305585.png 1.5x, /image1/image-20220824210305585.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824210305585.png"
-        title="image-20220824210305585" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824210156872.png">
+<img src="/image1/image-20220824210156872.png" alt="image-20220824210156872"  />
+</a>
+</div>
+</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824210305585.png">
+<img src="/image1/image-20220824210305585.png" alt="image-20220824210305585"  />
+</a>
+</div>
+</p>
 <p>根据这个公式推演
 <strong>大黄</strong>的收益</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824203328916.png"
-        data-srcset="/image1/image-20220824203328916.png, /image1/image-20220824203328916.png 1.5x, /image1/image-20220824203328916.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824203328916.png"
-        title="/image1/image-20220824203328916.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824203328916.png">
+<img src="/image1/image-20220824203328916.png" alt=""  />
+</a>
+</div>
+</p>
 <p><strong>小熊</strong>的收益</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824203348136.png"
-        data-srcset="/image1/image-20220824203348136.png, /image1/image-20220824203348136.png 1.5x, /image1/image-20220824203348136.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824203348136.png"
-        title="/image1/image-20220824203348136.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824203348136.png">
+<img src="/image1/image-20220824203348136.png" alt=""  />
+</a>
+</div>
+</p>
 <p>总结下：
 当前时刻的s的累加 - 前一个时刻s的累加[account] = account增加的s<br>
 rewardPerTokenStored 其实是个公共的数据 所有人共享的<br>
@@ -265,22 +260,20 @@ rewardPerTokenStored 其实是个公共的数据 所有人共享的<br>
 当前时刻的s的累加 每次计算完reward后 会更新userRewardPerTokenPaid[account]<br>
 就会变成未来一个时刻的减号后面的数字</p>
 <p>最后演算下 这个场景</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824203433388.png"
-        data-srcset="/image1/image-20220824203433388.png, /image1/image-20220824203433388.png 1.5x, /image1/image-20220824203433388.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824203433388.png"
-        title="/image1/image-20220824203433388.png" /></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/image1/image-20220824203446447.png"
-        data-srcset="/image1/image-20220824203446447.png, /image1/image-20220824203446447.png 1.5x, /image1/image-20220824203446447.png 2x"
-        data-sizes="auto"
-        alt="/image1/image-20220824203446447.png"
-        title="/image1/image-20220824203446447.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824203433388.png">
+<img src="/image1/image-20220824203433388.png" alt=""  />
+</a>
+</div>
+</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/image1/image-20220824203446447.png">
+<img src="/image1/image-20220824203446447.png" alt=""  />
+</a>
+</div>
+</p>
 <p>我们根据上面那个有横轴纵轴的图，从图像上分析他的算法。</p>
 <p>假设用L(t) 是总收益，一定时间段<sub>这个时间段代币总量不变</sub>的每个代币可以兑换的奖励币为m<sub>n </sub> ,m<sub>n </sub>会根据代币总量的变化而变化</p>
 <p>我们每秒的计算 下 L(t)=m<sub>1 </sub>*2 + m<sub>2 </sub>*3 + m<sub>3 </sub>*2 + m<sub>4 </sub>*4</p>

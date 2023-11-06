@@ -43,7 +43,13 @@
         <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
     <div class="header-wrapper">
         <div class="header-title">
-            <a href="/" title="Conwy">Conwy</a>
+            <a href="/" title="Conwy">Conwy
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+            </a>
         </div>
         <div class="menu">
             <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
@@ -119,38 +125,35 @@ lendf.me 调用oracle函数返回价格用的</p>
 <p>我们先分析他的第一笔攻击交易
 0xe49304cd3edccf32069dcbbb5df7ac3b8678daad34d0ad1927aa725a8966d52a</p>
 <p>地址：https://etherscan.io/tx/0xe49304cd3edccf32069dcbbb5df7ac3b8678daad34d0ad1927aa725a8966d52a</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228215914137.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228215914137.png, /lendfme_shijianfenxi.assets/image-20221228215914137.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228215914137.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228215914137.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228215914137.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228215914137.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228215914137.png" alt=""  />
+</a>
+</div>
+</p>
 <p>请注意，这是攻击的第一笔交易，攻击合约目前有21595个imBTC代币。攻击合约之前是没有在lendf.me存过款的，所以我在单看这笔交易时，其实没发现什么问题。</p>
 <p>下面我们看下代码调用过程的，通过分析代码的调用，看看能发现什么新线索。
 使用工具blocksec。</p>
 <p>红框部分是这笔交易的第一次supply（存款操作）函数的调用</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228220253003.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228220253003.png, /lendfme_shijianfenxi.assets/image-20221228220253003.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228220253003.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228220253003.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228220253003.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228220253003.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228220253003.png" alt=""  />
+</a>
+</div>
+</p>
 <p>注意
 EVENT中的amount=21,594, startingBalance=0, newBalance=21,594</p>
 <p>说的意思是转入了21,594，刚开始本金是0，更新后的本金是21,594.也证实了这是攻击合约第一次在存款。</p>
 <p>我们来看下这笔交易的第二次 supply</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228220330992.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228220330992.png, /lendfme_shijianfenxi.assets/image-20221228220330992.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228220330992.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228220330992.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228220330992.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228220330992.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228220330992.png" alt=""  />
+</a>
+</div>
+</p>
 <p>EVENT中amount=1, startingBalance=0, newBalance=21,595</p>
 <p>说的意思是转入了1，刚开始本金是0，更新后的本金是21956。</p>
 <p>请注意我们在看ETH浏览器的交易中是，他是有withdraw（提款）的。我们看代码第二次调用时supply 中的<a href="https://etherscan.io/address/0x3212b29e33587a00fb1c83346f5dbfa69a458923" target="_blank" rel="noopener noreffer">imBTC</a>.transferFrom 方法是与第一次不同的 其中多了第4层call，其中就含有<a href="https://etherscan.io/address/0x0eee3e3828a45f7601d5f54bf49bb01d1a9df5ea" target="_blank" rel="noopener noreffer">Lendf.Me</a>.withdraw方法的调用。</p>
@@ -163,58 +166,52 @@ EVENT中的amount=21,594, startingBalance=0, newBalance=21,594</p>
 <p>第一个问题的解释，哪里重入了。</p>
 <p>ImBTC是ERC777合约 这个合约会在转账时通知目标合约谁给你转钱了。也就是在通知这里有重入。（这个地方需要自己补充下相关知识，ERC777和ERC1820）</p>
 <p>LendfMe.sol</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228221026020.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228221026020.png, /lendfme_shijianfenxi.assets/image-20221228221026020.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228221026020.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228221026020.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228221026020.png" /></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228221033373.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228221033373.png, /lendfme_shijianfenxi.assets/image-20221228221033373.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228221033373.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228221033373.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228221033373.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228221026020.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228221026020.png" alt=""  />
+</a>
+</div>
+</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228221033373.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228221033373.png" alt=""  />
+</a>
+</div>
+</p>
 <p>imBTC.sol</p>
-<p>​	<img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228221044504.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228221044504.png, /lendfme_shijianfenxi.assets/image-20221228221044504.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228221044504.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228221044504.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228221044504.png" /></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228221048895.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228221048895.png, /lendfme_shijianfenxi.assets/image-20221228221048895.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228221048895.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228221048895.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228221048895.png" /></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228221055457.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228221055457.png, /lendfme_shijianfenxi.assets/image-20221228221055457.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228221055457.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228221055457.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228221055457.png" /></p>
+<p>​	
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228221044504.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228221044504.png" alt=""  />
+</a>
+</div>
+</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228221048895.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228221048895.png" alt=""  />
+</a>
+</div>
+</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228221055457.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228221055457.png" alt=""  />
+</a>
+</div>
+</p>
 <p>攻击合约在tokenToSend中重入withdraw函数。
 第二个问题的解释，重入导致了什么问题。</p>
 <p>LendfMe.sol</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228221119637.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228221119637.png, /lendfme_shijianfenxi.assets/image-20221228221119637.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228221119637.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228221119637.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228221119637.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228221119637.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228221119637.png" alt=""  />
+</a>
+</div>
+</p>
 <p>Balance.principal 保存的是用户在lendf.me金额，在第二次supply中，攻击合约同过重入提取了之前存入的21594后，重入函数中withdraw函数执行完成。</p>
 <p>Withdraw函数中是有正确的更改用户在合约的余额的。</p>
 <p>此时</p>
@@ -222,14 +219,13 @@ EVENT中的amount=21,594, startingBalance=0, newBalance=21,594</p>
 <p>重入函数中withdraw函数执行完成后，转账函数进而执行完成。（也就是交易详情为什么withdraw在第二次supply前面的原因）</p>
 <p>继续进行1590行后的操作，localResults.userSupplyUpdated存的是21594+1。再更新为用户的余额就是21595。也就是supply的余额覆盖了正确的数值。</p>
 <p>正常用户的余额应该是1。</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228221158953.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228221158953.png, /lendfme_shijianfenxi.assets/image-20221228221158953.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228221158953.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228221158953.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228221158953.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228221158953.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228221158953.png" alt=""  />
+</a>
+</div>
+</p>
 <p>localResults.userSupplyUpdated存的是21594+1的由来，是第一次supply的21594，加上第二次supply中的1。</p>
 <p>补充说下：calculateBalance函数是计算你存入期间本金+利息。我们这一笔交易没有利息。</p>
 <p>以上就是这次攻击的分析，总结下：</p>
@@ -264,25 +260,23 @@ EVENT中的amount=21,594, startingBalance=0, newBalance=21,594</p>
 <p>0x538359785a8d5ab1a741a0ba94f26a800759d91d  imBTC 21595</p>
 <p>重点就是这个Lendf.Me合约用户的余额。这个数据看第二笔交易查到的。</p>
 <p>这边附上 查看攻击合约的代码。使用工具https://library.dedaub.com/decompile</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228221404349.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228221404349.png, /lendfme_shijianfenxi.assets/image-20221228221404349.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228221404349.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228221404349.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228221404349.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228221404349.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228221404349.png" alt=""  />
+</a>
+</div>
+</p>
 <p>_tokensToSend = 1; 表示第一次正常supply
 _tokensToSend = 0; 表示第二次重入supply
 重入代码为</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme_shijianfenxi.assets/image-20221228221420382.png"
-        data-srcset="/lendfme_shijianfenxi.assets/image-20221228221420382.png, /lendfme_shijianfenxi.assets/image-20221228221420382.png 1.5x, /lendfme_shijianfenxi.assets/image-20221228221420382.png 2x"
-        data-sizes="auto"
-        alt="/lendfme_shijianfenxi.assets/image-20221228221420382.png"
-        title="/lendfme_shijianfenxi.assets/image-20221228221420382.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme_shijianfenxi.assets/image-20221228221420382.png">
+<img src="/lendfme_shijianfenxi.assets/image-20221228221420382.png" alt=""  />
+</a>
+</div>
+</p>
 <p>附上第二，三次交易数据交易流程</p>
 <p>第二笔</p>
 <p>攻击交易：0xae7d664bdfcc54220df4f18d339005c6faf6e62c9ca79c56387bc0389274363b</p>

@@ -43,7 +43,13 @@
         <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
     <div class="header-wrapper">
         <div class="header-title">
-            <a href="/" title="Conwy">Conwy</a>
+            <a href="/" title="Conwy">Conwy
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+            </a>
         </div>
         <div class="menu">
             <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
@@ -124,33 +130,30 @@ $$
 <p>分析第一种场景：我们在区块1 小A 存 ，区块2 小B借，区块4 小B借， 区块5 小A提</p>
 <p>其中，第一次借款后，存款利率变为10% ，第二次借款后，存款利率变为20%。以区块为周期。</p>
 <p>当前场景下的数据为（借款后才会有存款利率，借1表示第一个借操作）</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232025449.png"
-        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232025449.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232025449.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232025449.png 2x"
-        data-sizes="auto"
-        alt="/lendfme利率模型分析.assets/image-20221228232025449.png"
-        title="/lendfme利率模型分析.assets/image-20221228232025449.png" /></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232043738.png"
-        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232043738.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232043738.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232043738.png 2x"
-        data-sizes="auto"
-        alt="/lendfme利率模型分析.assets/image-20221228232043738.png"
-        title="/lendfme利率模型分析.assets/image-20221228232043738.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232025449.png">
+<img src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232025449.png" alt=""  />
+</a>
+</div>
+</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232043738.png">
+<img src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232043738.png" alt=""  />
+</a>
+</div>
+</p>
 <p>补充说明下：存的是当动作发生时newSupplyIndex，也是动作发生后的SupplyIndex。因为newSupplyIndex会在函数最后更新supplyIndex。</p>
  <br/>
 <p>这边假设提款为0，让本金和利息都在用户账本中保存。方便我们理解，也就是说，当提款为0时，表示利息结算操作。</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232103766.png"
-        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232103766.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232103766.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232103766.png 2x"
-        data-sizes="auto"
-        alt="/lendfme利率模型分析.assets/image-20221228232103766.png"
-        title="/lendfme利率模型分析.assets/image-20221228232103766.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232103766.png">
+<img src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232103766.png" alt=""  />
+</a>
+</div>
+</p>
 <p>说下这个市场账本（market）和用户账本(balance)。</p>
 <p>市场账本market是个全局变量， 在每次存，借，提 会更新整体的总存款，存款利率，存款利率系数，总借款，借款利率，借款系数，并且更新发生这些动作时的*区块号（区块号更新也是重点）*。这里我们只看存款相关的数据。</p>
 <p>用户账本balance 也是全局变量记录用户的本金和当时存款时或者提款时的存款利率系数SupplyIndex。</p>
@@ -214,14 +217,13 @@ $$
 <p>144 *1.728/1.44 =144*1.2=1728</p>
  <br/>
 <p>更新 newSupplyIndex 1.728至市场账本和用户账本。</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232133358.png"
-        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232133358.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232133358.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232133358.png 2x"
-        data-sizes="auto"
-        alt="/lendfme利率模型分析.assets/image-20221228232133358.png"
-        title="/lendfme利率模型分析.assets/image-20221228232133358.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232133358.png">
+<img src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232133358.png" alt=""  />
+</a>
+</div>
+</p>
 <p>我们再多算一步进行验证，第7块有人还钱了导致存款利率降低为10%，我们在第8块 计算下用户的总金额</p>
  <br/>
 <p>有人还钱存款利率降低至10%</p>
@@ -244,22 +246,20 @@ $$
 <p>其中乘以1+20%是第7块的总金额</p>
 <p>乘以1+10%是第8块的总金额 同时我们也看出newSupplyIndex/ oldSupplyIndex 就是存款</p>
 <p>利率的累乘值。</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232201245.png"
-        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232201245.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232201245.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232201245.png 2x"
-        data-sizes="auto"
-        alt="/lendfme利率模型分析.assets/image-20221228232201245.png"
-        title="/lendfme利率模型分析.assets/image-20221228232201245.png" /></p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232213106.png"
-        data-srcset="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232213106.png, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232213106.png 1.5x, /lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232213106.png 2x"
-        data-sizes="auto"
-        alt="/lendfme利率模型分析.assets/image-20221228232213106.png"
-        title="/lendfme利率模型分析.assets/image-20221228232213106.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232201245.png">
+<img src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232201245.png" alt=""  />
+</a>
+</div>
+</p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232213106.png">
+<img src="/lendfme%e5%88%a9%e7%8e%87%e6%a8%a1%e5%9e%8b%e5%88%86%e6%9e%90.assets/image-20221228232213106.png" alt=""  />
+</a>
+</div>
+</p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">

@@ -43,7 +43,13 @@
         <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
     <div class="header-wrapper">
         <div class="header-title">
-            <a href="/" title="Conwy">Conwy</a>
+            <a href="/" title="Conwy">Conwy
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+            </a>
         </div>
         <div class="menu">
             <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
@@ -85,14 +91,13 @@
 <p>启动后 http://localhost:1313/  本地访问博客。</p>
 <p>草稿文件命令 在文章开头中draft: true</p>
 <p>如图</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/hugo%e4%bd%bf%e7%94%a8%e5%a4%87%e5%bf%98.assets/image-20221208225938771.png"
-        data-srcset="/hugo%e4%bd%bf%e7%94%a8%e5%a4%87%e5%bf%98.assets/image-20221208225938771.png, /hugo%e4%bd%bf%e7%94%a8%e5%a4%87%e5%bf%98.assets/image-20221208225938771.png 1.5x, /hugo%e4%bd%bf%e7%94%a8%e5%a4%87%e5%bf%98.assets/image-20221208225938771.png 2x"
-        data-sizes="auto"
-        alt="/hugo使用备忘.assets/image-20221208225938771.png"
-        title="/hugo使用备忘.assets/image-20221208225938771.png" /></p>
+<p>
+<div class="post-img-view">
+<a data-fancybox="gallery" href="/hugo%e4%bd%bf%e7%94%a8%e5%a4%87%e5%bf%98.assets/image-20221208225938771.png">
+<img src="/hugo%e4%bd%bf%e7%94%a8%e5%a4%87%e5%bf%98.assets/image-20221208225938771.png" alt=""  />
+</a>
+</div>
+</p>
 <p>创建文章命令  hugo new post/第二篇测试博客.md （默认是草稿模式）</p>
 <h4 id="图片设置">图片设置</h4>
 <p>正常做法：</p>
