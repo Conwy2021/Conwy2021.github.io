@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Capl脚本编写 - Conwy</title><meta name="Description" content="begin 2022"><meta property="og:title" content="Capl脚本编写" />
+<meta property="og:description" content="Capl 脚本 编写 过程记录 1、CMAC 算法编写记录 需要使用CANOE自带的算法库，导入方式为右键创建的节点，然后点Configuration-Com" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://conwy2021.github.io/capl%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" />
+<meta property="og:image" content="https://conwy2021.github.io/logo.png"/>
+<meta property="article:published_time" content="2025-04-08T21:32:46+08:00" />
+<meta property="article:modified_time" content="2025-04-08T21:32:46+08:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://conwy2021.github.io/logo.png"/>
+
+<meta name="twitter:title" content="Capl脚本编写"/>
+<meta name="twitter:description" content="Capl 脚本 编写 过程记录 1、CMAC 算法编写记录 需要使用CANOE自带的算法库，导入方式为右键创建的节点，然后点Configuration-Com"/>
+<meta name="application-name" content="Conwy随笔">
+<meta name="apple-mobile-web-app-title" content="Conwy随笔"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://conwy2021.github.io/capl%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/" /><link rel="prev" href="https://conwy2021.github.io/lendfme_shijianfenxi/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Capl脚本编写",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/conwy2021.github.io\/capl%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99\/"
+        },"image": ["https:\/\/conwy2021.github.io\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "车辆安全","wordcount":  2329 ,
+        "url": "https:\/\/conwy2021.github.io\/capl%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99\/","datePublished": "2025-04-08T21:32:46+08:00","dateModified": "2025-04-08T21:32:46+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": "https:\/\/conwy2021.github.io\/images\/avatar.png"},"author": {
+                "@type": "Person",
+                "name": "Conwy"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Conwy">Conwy
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+
+            </a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Conwy">Conwy</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Capl脚本编写</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Conwy</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%BD%A6%E8%BE%86%E5%AE%89%E5%85%A8/"><i class="far fa-folder fa-fw"></i>车辆安全</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2025-04-08">2025-04-08</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2329 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 5 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1cmac-算法编写记录">1、CMAC 算法编写记录</a></li>
+    <li><a href="#2异或算法编写记录">2、异或算法编写记录</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="capl-脚本-编写-过程记录">Capl 脚本 编写 过程记录</h1>
+<h2 id="1cmac-算法编写记录">1、CMAC 算法编写记录</h2>
+<p>需要使用CANOE自带的算法库，导入方式为右键创建的节点，然后点Configuration-Components-Add</p>
+<p>加载此模块需要在本地搜索下SecMgrCANoeClient.vmodule</p>
+<p>正常情况会在函数栏中，看到此安全库，如果没有点下环境导入，CAMC函数为SecurityLocalGenerateCMAC。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">/*@!Encoding:936*/
+//网关2701 认证测试 cmac算法
+variables
+{
+    message 0x70E diagRequestMsg;  // 诊断请求消息
+    message 0x702 authRequestMsg;  // 认证请求消息
+    message 0x70E flowControl;
+    byte key1[16] = { 0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00  }; // AES-128 密钥
+
+    byte seed[16];  // ECU 返回的 Seed
+    byte tempSeed[18]; // 用于存储完整的 18 字节 Seed 响应数据
+    dword seedLength = 32;
+
+    byte cmac[16]; // CMAC 计算结果
+    dword cmacLength = 16;
+
+    int sessionActive = 0;      // 标记是否已进入扩展会话
+    int waitingForMultiFrame = 0;  // 标记是否正在接收多帧数据
+    int receivedBytes = 0;         // 记录已接收的字节数
+    int i;
+    long result;
+    byte fullSeed[32];  // 目标数组 (16 + 1 + 15 = 32 字节)
+}
+
+/* 按 &#39;W&#39; 触发完整安全认证流程 */
+on key &#39;w&#39;
+{
+    // 发送 1003 进入扩展会话
+    diagRequestMsg.dlc = 8;  
+    diagRequestMsg.byte(0) = 0x02;
+    diagRequestMsg.byte(1) = 0x10;
+    diagRequestMsg.byte(2) = 0x03;
+    
+    output(diagRequestMsg);
+    write(&#34;?? 发送 1003 进入扩展会话...&#34;);
+}
+
+/* 监听 ECU 响应 */
+on message CAN1.*
+{
+    /* 处理 ECU 对 1003 的响应 */
+    if (this.id == 0x78E &amp;&amp; this.byte(1) == 0x50 &amp;&amp; this.byte(2) == 0x03)
+    {
+        write(&#34;? 进入扩展会话成功! 继续发送 2701 请求 Seed...&#34;);
+
+        sessionActive = 1; // 标记已进入扩展会话
+
+        // 发送 2701 请求 Seed
+        diagRequestMsg.dlc = 8;
+        diagRequestMsg.byte(0) = 0x02;
+        diagRequestMsg.byte(1) = 0x27;
+        diagRequestMsg.byte(2) = 0x01;
+
+        output(diagRequestMsg);
+        write(&#34;?? 发送 2701 请求 Seed...&#34;);
+    }
+
+    /* 处理 ECU 返回的 Seed (首帧) */
+    if (sessionActive == 1 &amp;&amp; this.id == 0x78E &amp;&amp; this.byte(2) == 0x67)
+    {
+        waitingForMultiFrame = 1;  // 开始等待多帧数据
+        receivedBytes = this.byte(1); // 提取数据长度 (0x12 = 18 字节)
+
+        write(&#34;? ECU 发送多帧响应，总数据长度: %d 字节&#34;, receivedBytes);
+
+        // 存储首帧数据 (从 byte(2) 开始)
+        for (i = 0; i &lt; 6; i++)
+        {
+            tempSeed[i] = this.byte(i + 2);
+        }
+
+        // 发送流控帧 (FC) [30 00 00]
+        
+        // 发送到 ECU
+        flowControl.dlc = 8;
+        flowControl.byte(0) = 0x30; // FC 流控帧
+        flowControl.byte(1) = 0x00; // Block Size = 8
+        flowControl.byte(2) = 0x00; // Separation Time = 20ms
+        flowControl.byte(3) = 0x00;
+        flowControl.byte(4) = 0x00;
+        flowControl.byte(5) = 0x00;
+        flowControl.byte(6) = 0x00;
+        flowControl.byte(7) = 0x00;
+
+        output(flowControl);
+        write(&#34;?? 发送流控帧 (FC) -&gt; [30 00 00 00 00 00 00 00]&#34;);
+    }
+
+    /* 处理 ECU 发送的后续帧 (CF) */
+    if (waitingForMultiFrame == 1 &amp;&amp; this.id == 0x78e &amp;&amp; (this.byte(0) &amp; 0xF0) == 0x20)
+    {
+        int frameIndex;  // 先声明变量
+        int offset;
+        frameIndex = (this.byte(0) &amp; 0x0F); // 运行时获取帧序号
+       
+        offset = 6 + (frameIndex - 1) * 7; // 计算存储偏移量
+
+        write(&#34;?? 收到连续帧 #%d, 数据:&#34;, frameIndex);
+
+        for (i = 0; i &lt; 7 &amp;&amp; (offset + i) &lt; receivedBytes; i++)
+        {
+            tempSeed[offset + i] = this.byte(i + 1);
+            write(&#34;0x%02X &#34;, tempSeed[offset + i]);
+        }
+
+        // 如果已接收所有数据
+        if (offset + i &gt;= receivedBytes)
+        {
+            waitingForMultiFrame = 0; // 结束多帧接收
+            write(&#34;? Seed 接收完成, 开始计算 CMAC...&#34;);
+
+            // 复制 16 字节 Seed (从 tempSeed[2] 开始)
+            for (i = 0; i &lt; 16; i++)
+            {
+                seed[i] = tempSeed[i + 2];
+            }
+
+            write(&#34;?? 最终 Seed 数据:&#34;);
+            write(&#34;seed: %02X %02X %02X %02X %02X %02X %02X %02X&#34;, seed[0], seed[1], seed[2], seed[3], seed[4], seed[5], seed[6], seed[7]);
+            write(&#34;      %02X %02X %02X %02X %02X %02X %02X %02X&#34;, seed[8], seed[9], seed[10], seed[11], seed[12], seed[13], seed[14], seed[15]);
+            // 复制 seed (前 16 字节)
+for (i = 0; i &lt; 16; i++) {
+    fullSeed[i] = seed[i];
+}
+
+// 拼接 0x01
+fullSeed[16] = 0x01;
+
+// 拼接 15 个 0x00
+for (i = 17; i &lt; 32; i++) {
+    fullSeed[i] = 0x00;
+}
+write(&#34;完整 fullSeed 数据: &#34;);
+write(&#34;fullSeed: %02X %02X %02X %02X %02X %02X %02X %02X&#34;, fullSeed[0], fullSeed[1], fullSeed[2], fullSeed[3], fullSeed[4], fullSeed[5], fullSeed[6], fullSeed[7]);
+            write(&#34;      %02X %02X %02X %02X %02X %02X %02X %02X&#34;, fullSeed[8], fullSeed[9], fullSeed[10], fullSeed[11], fullSeed[12], fullSeed[13], fullSeed[14], fullSeed[15]);
+write(&#34;      %02X %02X %02X %02X %02X %02X %02X %02X&#34;, fullSeed[16], fullSeed[17], fullSeed[18], fullSeed[19], fullSeed[20], fullSeed[21], fullSeed[22], fullSeed[23]);
+write(&#34;      %02X %02X %02X %02X %02X %02X %02X %02X&#34;, fullSeed[24], fullSeed[25], fullSeed[26], fullSeed[27], fullSeed[28], fullSeed[29], fullSeed[30], fullSeed[31]);
+            // 计算 16 字节 CMAC
+            result = SecurityLocalGenerateCMAC(key1, 16, fullSeed, 32, cmac, cmacLength);
+
+            if (result != 1)
+            {
+                write(&#34;? CMAC 计算失败, 错误代码: %d&#34;, result);
+                return;
+            }
+            write(&#34;CMAC: %02X %02X %02X %02X %02X %02X %02X %02X&#34;, cmac[0], cmac[1], cmac[2], cmac[3], cmac[4], cmac[5], cmac[6], cmac[7]);
+            write(&#34;      %02X %02X %02X %02X %02X %02X %02X %02X&#34;, cmac[8], cmac[9], cmac[10], cmac[11], cmac[12], cmac[13], cmac[14], cmac[15]);
+            write(&#34;? CMAC 计算成功, 发送 2702 进行认证...&#34;);
+
+            // 发送 2702 + 16 字节 CMAC
+            authRequestMsg.id = 0x70E;
+            authRequestMsg.dlc = 8;
+            authRequestMsg.byte(0) = 0x10;
+            authRequestMsg.byte(1) = 0x12;
+            authRequestMsg.byte(2) = 0x27;
+            authRequestMsg.byte(3) = 0x02;
+
+            for (i = 0; i &lt; 4; i++)//cmac 前4位 第一帧
+            {
+                authRequestMsg.byte(i + 4) = cmac[i];
+            }
+
+            output(authRequestMsg);//发送第一帧
+            write(&#34;?? 发送 2702 认证请求第一帧...&#34;);
+            
+            
+        }
+        
+     }
+     
+     if (sessionActive == 1 &amp;&amp; this.id == 0x78e &amp;&amp; this.byte(0) == 0x30 )
+    {
+        write(&#34;? 发送第二帧!&#34;);
+        authRequestMsg.dlc = 8;
+        authRequestMsg.byte(0) = 0x21;
+        for (i = 0; i &lt; 7; i++)//cmac 第二帧
+            {
+                authRequestMsg.byte(i + 1) = cmac[i+4];// 4 5 6 7 8 9 10 
+            }
+          output(authRequestMsg);//发送第二帧
+          write(&#34;? 发送第三帧!&#34;);
+          authRequestMsg.dlc = 8;
+          authRequestMsg.byte(0) = 0x22;
+            for (i = 0; i &lt; 5; i++)//cmac  第三帧
+            {
+                authRequestMsg.byte(i + 1) = cmac[i+11];// 11 12 13 14 15
+            }
+            
+            for (i = 6; i &lt; 8; i++)//cmac  第三帧尾部填充CC 两位
+            {
+                authRequestMsg.byte(i) = 0x00;
+            }
+            
+        output(authRequestMsg);//发送第三帧
+        
+    }
+
+    /* 监听 2702 认证结果 */
+    if (sessionActive == 1 &amp;&amp; this.id == 0x78e &amp;&amp; this.byte(1) == 0x67 &amp;&amp; this.byte(2) == 0x02)
+    {
+        write(&#34;? 认证成功, ECU 通过安全访问!&#34;);
+    }
+    else if (sessionActive == 1 &amp;&amp; this.id == 0x78e &amp;&amp; this.byte(1) == 0x7F)
+    {
+        write(&#34;? 认证失败, 错误码: 0x%02x&#34;, this.byte(3));
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="2异或算法编写记录">2、异或算法编写记录</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">/*@!Encoding:936*/
+variables
+{
+    message 0x702 diagRequestMsg;  // 诊断请求消息
+   
+
+   
+
+    byte seed[4];  // ECU 返回的 Seed
+    byte Cal[4];   // 计算数组
+    byte key1[4] = {0x00, 0x00, 0x00, 0x00}; // 密钥数组
+    byte Xor[4] = {0x22, 0x22, 0x22, 0x22}; // 修改为对应部件的异或数组
+
+    int sessionActive = 0;      // 标记是否已进入扩展会话
+    
+    int i;
+}
+
+/* 按 &#39;W&#39; 触发完整安全认证流程 */
+on key &#39;e&#39;
+{
+    // 发送 1003 进入扩展会话
+    diagRequestMsg.dlc = 8;  
+    diagRequestMsg.byte(0) = 0x02;
+    diagRequestMsg.byte(1) = 0x10;
+    diagRequestMsg.byte(2) = 0x03;
+    
+    output(diagRequestMsg);
+    write(&#34;?? 发送 1003 进入扩展会话...&#34;);
+}
+
+/* 监听 ECU 响应 */
+on message CAN1.*
+{
+    /* 处理 ECU 对 1003 的响应 */
+    if (this.id == 0x782 &amp;&amp; this.byte(1) == 0x50 &amp;&amp; this.byte(2) == 0x03)
+    {
+       sessionActive = 1; // 标记已进入扩展会话
+        diagRequestMsg.dlc = 8;
+        diagRequestMsg.byte(0) = 0x02;
+        diagRequestMsg.byte(1) = 0x27;
+        diagRequestMsg.byte(2) = 0x01;
+
+        output(diagRequestMsg);
+        write(&#34;?? 发送 2701 请求 Seed...&#34;);
+    }
+      
+      if (sessionActive == 1 &amp;&amp; this.id == 0x782 &amp;&amp; this.byte(1) == 0x67&amp;&amp;this.byte(2)==0x01){
+        write(&#34;? 收到 ECU Seed, 开始计算 Key...&#34;);
+        for ( i = 0; i &lt; 4; i++)
+        {
+            seed[i] = this.byte(i + 3);
+        }
+
+        // 打印 Seed
+       write(&#34;?? Seed 数据: 0x%02X 0x%02X 0x%02X 0x%02X&#34;, seed[0], seed[1], seed[2], seed[3]);
+
+        
+        for ( i = 0; i &lt; 4; i++)
+        {
+            Cal[i] = seed[i] ^ Xor[i];
+        }
+
+        // **Step 2: 计算 Key**
+        key1[0] = ((Cal[0] &amp; 0x0F) &lt;&lt; 4) | (Cal[1] &amp; 0xF0);
+        key1[1] = ((Cal[1] &amp; 0x0F) &lt;&lt; 4) | ((Cal[2] &amp; 0xF0) &gt;&gt; 4);
+        key1[2] = (Cal[2] &amp; 0xF0) | ((Cal[3] &amp; 0xF0) &gt;&gt; 4);
+        key1[3] = ((Cal[3] &amp; 0x0F) &lt;&lt; 4) | (Cal[0] &amp; 0x0F);
+
+        
+
+        // **打印 Key 及最终值**
+        write(&#34;?? 计算出的 Key: 0x%02X 0x%02X 0x%02X 0x%02X&#34;, key1[0], key1[1], key1[2], key1[3]);
+       
+       
+        // 发送 2702 认证请求
+        diagRequestMsg.dlc = 8;
+        diagRequestMsg.byte(0) = 0x06;
+        diagRequestMsg.byte(1) = 0x27;
+        diagRequestMsg.byte(2) = 0x02;
+        diagRequestMsg.byte(3) = key1[0];
+        diagRequestMsg.byte(4) = key1[1];
+        diagRequestMsg.byte(5)= key1[2];
+        diagRequestMsg.byte(6) = key1[3];
+        diagRequestMsg.byte(7) = 0x00;
+        output(diagRequestMsg);
+        write(&#34;?? 发送 2702 认证请求...&#34;);
+    }
+
+    
+
+    /* 监听 2702 认证结果 */
+    if (sessionActive == 1 &amp;&amp; this.id == 0x782 &amp;&amp; this.byte(1) == 0x67 &amp;&amp; this.byte(2) == 0x02)
+    {
+        write(&#34;? 认证成功, ECU 通过安全访问!&#34;);
+    }
+    else if (sessionActive == 1 &amp;&amp; this.id == 0x782 &amp;&amp; this.byte(1) == 0x7F)
+    {
+        write(&#34;? 认证失败, 错误码: 0x%02x&#34;, this.byte(3));
+    }
+
+}
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2025-04-08</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/capl%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E8%BD%A6%E8%BE%86%E5%AE%89%E5%85%A8/">车辆安全</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/lendfme_shijianfenxi/" class="prev" rel="prev" title="Lendfme事件分析"><i class="fas fa-angle-left fa-fw"></i>Lendfme事件分析</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.74.2">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2022 - 2025</span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/copy-tex.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/mhchem.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

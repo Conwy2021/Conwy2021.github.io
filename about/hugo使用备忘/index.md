@@ -27,7 +27,7 @@
 
 ![](/hugo使用备忘.assets/image-20221208225938771.png)
 
-创建文章命令  hugo new post/第二篇测试博客.md （默认是草稿模式）
+创建文章命令  hugo new posts/第二篇测试博客.md （默认是草稿模式）
 
 #### 图片设置
 
@@ -45,6 +45,12 @@
 #### 其他
 
 文章目录为 ``\blog\content``
+
+#### 更新至public目录
+
+cmd中 使用 hugo 命令
+
+
 
  
 
